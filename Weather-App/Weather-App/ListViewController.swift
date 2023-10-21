@@ -10,6 +10,8 @@ import SwiftUI
 
 class ListViewController: UIViewController {
     
+    let nextViewController = DetailViewController()
+    
     //MARK: - 객체 생성
     // 더보기 버튼
     let etcButton: UIButton = {
@@ -53,7 +55,7 @@ class ListViewController: UIViewController {
         
         let marginView = UIView()
         imageView.frame = CGRect(x: 0, y: 0, width: 8, height: 24)
-
+        
         
         return textField
     }()
@@ -84,10 +86,10 @@ class ListViewController: UIViewController {
         
         view.addSubview(title)
         title.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                title.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 16),
-                title.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 10)
-            ])
+        NSLayoutConstraint.activate([
+            title.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 16),
+            title.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 10)
+        ])
         
         let locationTitle = UILabel()
         let customLocationFont = UIFont(name: "SFProText-Regular", size: 17.0)
@@ -97,10 +99,10 @@ class ListViewController: UIViewController {
         
         view.addSubview(locationTitle)
         locationTitle.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                locationTitle.leadingAnchor.constraint(equalTo: title.leadingAnchor),
-                locationTitle.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 2)
-            ])
+        NSLayoutConstraint.activate([
+            locationTitle.leadingAnchor.constraint(equalTo: title.leadingAnchor),
+            locationTitle.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 2)
+        ])
         
         let degreeNumber = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Light", size: 52.0)
@@ -110,10 +112,10 @@ class ListViewController: UIViewController {
         
         view.addSubview(degreeNumber)
         degreeNumber.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                degreeNumber.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                degreeNumber.topAnchor.constraint(equalTo: view.topAnchor, constant: 4)
-            ])
+        NSLayoutConstraint.activate([
+            degreeNumber.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            degreeNumber.topAnchor.constraint(equalTo: view.topAnchor, constant: 4)
+        ])
         
         let statusText = UILabel()
         let customStatusFont = UIFont(name: "SFProText-Regular", size: 16.0)
@@ -123,10 +125,10 @@ class ListViewController: UIViewController {
         
         view.addSubview(statusText)
         statusText.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                statusText.leadingAnchor.constraint(equalTo: locationTitle.leadingAnchor),
-                statusText.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -10)
-            ])
+        NSLayoutConstraint.activate([
+            statusText.leadingAnchor.constraint(equalTo: locationTitle.leadingAnchor),
+            statusText.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -10)
+        ])
         
         let todayDegreeNumber = UILabel()
         let customTodayDegreeFont = UIFont(name: "SFProText-Regular", size: 16.0)
@@ -136,14 +138,11 @@ class ListViewController: UIViewController {
         
         view.addSubview(todayDegreeNumber)
         todayDegreeNumber.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                todayDegreeNumber.trailingAnchor.constraint(equalTo: degreeNumber.trailingAnchor),
-                todayDegreeNumber.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -10)
-            ])
-        
-        
-        
-        
+        NSLayoutConstraint.activate([
+            todayDegreeNumber.trailingAnchor.constraint(equalTo: degreeNumber.trailingAnchor),
+            todayDegreeNumber.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -10)
+        ])
+
         return view
     }()
     
@@ -151,12 +150,13 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.isNavigationBarHidden = true
         self.view.backgroundColor = .black
         self.view.addSubview(etcButton)
         self.view.addSubview(appTitle)
         self.view.addSubview(searchTextField)
         self.view.addSubview(listView)
-        
+
         etcButton.translatesAutoresizingMaskIntoConstraints = false
         appTitle.translatesAutoresizingMaskIntoConstraints = false
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -187,8 +187,15 @@ class ListViewController: UIViewController {
             listView.heightAnchor.constraint(equalToConstant: 117),
             listView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 15)
         ])
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapMyLocationView))
+            listView.addGestureRecognizer(tapGesture)
     }
     
+    @objc func tapMyLocationView() {
+        let detailVC = DetailViewController()
+        self.navigationController?.pushViewController(detailVC, animated: true)
+    }
 }
 
 
