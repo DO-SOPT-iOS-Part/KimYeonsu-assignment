@@ -12,6 +12,9 @@ class ListViewController: UIViewController {
     
     let nextViewController = DetailViewController()
     
+    let scrollView = UIScrollView()
+    var contentView = UIView()
+    
     //MARK: - 객체 생성
     // 더보기 버튼
     let etcButton: UIButton = {
@@ -151,39 +154,63 @@ class ListViewController: UIViewController {
         super.viewDidLoad()
         
         self.navigationController?.isNavigationBarHidden = true
-        self.view.backgroundColor = .black
-        self.view.addSubview(etcButton)
-        self.view.addSubview(appTitle)
-        self.view.addSubview(searchTextField)
-        self.view.addSubview(listView)
-
+        
+        scrollView.showsVerticalScrollIndicator = false
+        
+        self.view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        scrollView.alwaysBounceVertical = true
+        
+        self.contentView.backgroundColor = .black
+        self.contentView.addSubview(etcButton)
+        self.contentView.addSubview(appTitle)
+        self.contentView.addSubview(searchTextField)
+        self.contentView.addSubview(listView)
+        
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
         etcButton.translatesAutoresizingMaskIntoConstraints = false
         appTitle.translatesAutoresizingMaskIntoConstraints = false
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
         listView.translatesAutoresizingMaskIntoConstraints = false
         
+        NSLayoutConstraint.activate([scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+                                     scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                                     scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+                                     scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)])
+        
+        NSLayoutConstraint.activate([contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+                                     contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+                                     contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 0),
+                                     contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor)])
+        
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        let contentViewHeight = contentView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor)
+        contentViewHeight.priority = .defaultLow
+        contentViewHeight.isActive = true
+        
         NSLayoutConstraint.activate([
-            etcButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
-            etcButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            etcButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
+            etcButton.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 8),
             etcButton.heightAnchor.constraint(equalToConstant: 44),
             etcButton.widthAnchor.constraint(equalToConstant: 44)
         ])
         
         NSLayoutConstraint.activate([
             appTitle.topAnchor.constraint(equalTo: etcButton.bottomAnchor, constant: 0),
-            appTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
+            appTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20)
         ])
         
         NSLayoutConstraint.activate([
-            searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            searchTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            searchTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             searchTextField.heightAnchor.constraint(equalToConstant: 40),
             searchTextField.topAnchor.constraint(equalTo: appTitle.bottomAnchor, constant: 8)
         ])
         
         NSLayoutConstraint.activate([
-            listView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            listView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            listView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            listView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             listView.heightAnchor.constraint(equalToConstant: 117),
             listView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 15)
         ])

@@ -191,7 +191,7 @@ class DetailViewController: UIViewController {
     let iconView: UIView = {
         let view = UIView()
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "status-rain")
+        imageView.image = UIImage(named: "status-blur")
         imageView.contentMode = .scaleAspectFill
         
         view.addSubview(imageView)
@@ -230,7 +230,7 @@ class DetailViewController: UIViewController {
         let text = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 17.0)
         text.font = customDegreeFont
-        text.text = "Now"
+        text.text = "10시"
         text.textAlignment = .center
         text.textColor = .white
         return text
@@ -239,7 +239,7 @@ class DetailViewController: UIViewController {
     let iconView2: UIView = {
         let view = UIView()
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "status-rain")
+        imageView.image = UIImage(named: "status-drizzle")
         imageView.contentMode = .scaleAspectFill
         
         view.addSubview(imageView)
@@ -276,9 +276,9 @@ class DetailViewController: UIViewController {
     
     let timeLabel3: UILabel = {
         let text = UILabel()
-        let customDegreeFont = UIFont(name: "SFProText-Medium", size: 17.0)
+        let customDegreeFont = UIFont(name: "SFProText-Medium", size: 19.0)
         text.font = customDegreeFont
-        text.text = "Now"
+        text.text = "11시"
         text.textAlignment = .center
         text.textColor = .white
         return text
@@ -307,7 +307,7 @@ class DetailViewController: UIViewController {
         let degreeNumber = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 22.0)
         degreeNumber.font = customDegreeFont
-        degreeNumber.text = "21°"
+        degreeNumber.text = "19°"
         degreeNumber.textColor = .white
         degreeNumber.textAlignment = .center
         
@@ -326,7 +326,7 @@ class DetailViewController: UIViewController {
         let text = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 17.0)
         text.font = customDegreeFont
-        text.text = "Now"
+        text.text = "12시"
         text.textAlignment = .center
         text.textColor = .white
         return text
@@ -335,7 +335,7 @@ class DetailViewController: UIViewController {
     let iconView4: UIView = {
         let view = UIView()
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "status-rain")
+        imageView.image = UIImage(named: "status-thunder")
         imageView.contentMode = .scaleAspectFill
         
         view.addSubview(imageView)
@@ -355,7 +355,7 @@ class DetailViewController: UIViewController {
         let degreeNumber = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 22.0)
         degreeNumber.font = customDegreeFont
-        degreeNumber.text = "21°"
+        degreeNumber.text = "19°"
         degreeNumber.textColor = .white
         degreeNumber.textAlignment = .center
         
@@ -374,7 +374,7 @@ class DetailViewController: UIViewController {
         let text = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 17.0)
         text.font = customDegreeFont
-        text.text = "Now"
+        text.text = "1시"
         text.textAlignment = .center
         text.textColor = .white
         return text
@@ -383,7 +383,7 @@ class DetailViewController: UIViewController {
     let iconView5: UIView = {
         let view = UIView()
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "status-rain")
+        imageView.image = UIImage(named: "status-shower")
         imageView.contentMode = .scaleAspectFill
         
         view.addSubview(imageView)
@@ -403,7 +403,7 @@ class DetailViewController: UIViewController {
         let degreeNumber = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 22.0)
         degreeNumber.font = customDegreeFont
-        degreeNumber.text = "21°"
+        degreeNumber.text = "19°"
         degreeNumber.textColor = .white
         degreeNumber.textAlignment = .center
         
@@ -422,7 +422,7 @@ class DetailViewController: UIViewController {
         let text = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 17.0)
         text.font = customDegreeFont
-        text.text = "Now"
+        text.text = "2시"
         text.textAlignment = .center
         text.textColor = .white
         return text
@@ -431,7 +431,7 @@ class DetailViewController: UIViewController {
     let iconView6: UIView = {
         let view = UIView()
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "status-rain")
+        imageView.image = UIImage(named: "status-drizzle")
         imageView.contentMode = .scaleAspectFill
         
         view.addSubview(imageView)
@@ -470,7 +470,7 @@ class DetailViewController: UIViewController {
         let text = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 17.0)
         text.font = customDegreeFont
-        text.text = "Now"
+        text.text = "3시"
         text.textAlignment = .center
         text.textColor = .white
         return text
@@ -499,7 +499,7 @@ class DetailViewController: UIViewController {
         let degreeNumber = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 22.0)
         degreeNumber.font = customDegreeFont
-        degreeNumber.text = "21°"
+        degreeNumber.text = "22°"
         degreeNumber.textColor = .white
         degreeNumber.textAlignment = .center
         
@@ -518,7 +518,7 @@ class DetailViewController: UIViewController {
         let text = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 17.0)
         text.font = customDegreeFont
-        text.text = "Now"
+        text.text = "6시"
         text.textAlignment = .center
         text.textColor = .white
         return text
@@ -527,7 +527,7 @@ class DetailViewController: UIViewController {
     let iconView10: UIView = {
         let view = UIView()
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "status-rain")
+        imageView.image = UIImage(named: "status-blur")
         imageView.contentMode = .scaleAspectFill
         
         view.addSubview(imageView)
@@ -547,7 +547,7 @@ class DetailViewController: UIViewController {
         let degreeNumber = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 22.0)
         degreeNumber.font = customDegreeFont
-        degreeNumber.text = "21°"
+        degreeNumber.text = "19°"
         degreeNumber.textColor = .white
         degreeNumber.textAlignment = .center
         
@@ -566,7 +566,7 @@ class DetailViewController: UIViewController {
         let text = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 17.0)
         text.font = customDegreeFont
-        text.text = "Now"
+        text.text = "4시"
         text.textAlignment = .center
         text.textColor = .white
         return text
@@ -575,7 +575,7 @@ class DetailViewController: UIViewController {
     let iconView8: UIView = {
         let view = UIView()
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "status-rain")
+        imageView.image = UIImage(named: "status-drizzle")
         imageView.contentMode = .scaleAspectFill
         
         view.addSubview(imageView)
@@ -595,7 +595,7 @@ class DetailViewController: UIViewController {
         let degreeNumber = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 22.0)
         degreeNumber.font = customDegreeFont
-        degreeNumber.text = "21°"
+        degreeNumber.text = "20°"
         degreeNumber.textColor = .white
         degreeNumber.textAlignment = .center
         
@@ -614,7 +614,7 @@ class DetailViewController: UIViewController {
         let text = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 17.0)
         text.font = customDegreeFont
-        text.text = "Now"
+        text.text = "5시"
         text.textAlignment = .center
         text.textColor = .white
         return text
@@ -623,7 +623,7 @@ class DetailViewController: UIViewController {
     let iconView9: UIView = {
         let view = UIView()
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "status-rain")
+        imageView.image = UIImage(named: "status-drizzle")
         imageView.contentMode = .scaleAspectFill
         
         view.addSubview(imageView)
@@ -643,7 +643,7 @@ class DetailViewController: UIViewController {
         let degreeNumber = UILabel()
         let customDegreeFont = UIFont(name: "SFProText-Medium", size: 22.0)
         degreeNumber.font = customDegreeFont
-        degreeNumber.text = "21°"
+        degreeNumber.text = "20°"
         degreeNumber.textColor = .white
         degreeNumber.textAlignment = .center
         
@@ -658,6 +658,14 @@ class DetailViewController: UIViewController {
         self.scrollView.backgroundColor = .clear
         setLayout()
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapListIcon))
+            listIconView.addGestureRecognizer(tapGesture)
+        
+    }
+    
+    @objc func tapListIcon() {
+        let listVC = ListViewController()
+        self.navigationController?.popViewController(animated: true)
     }
     
     func setBackGroundUI() {
