@@ -17,6 +17,10 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.identifier,
                                                        for: indexPath) as? ListTableViewCell else {return UITableViewCell()}
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapMyLocationView))
+        cell.addGestureRecognizer(tapGesture)
+        
         return cell
     }
     
@@ -117,6 +121,9 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return 117.0
     }
     
-    
+    @objc func tapMyLocationView() {
+        let detailVC = DetailViewController()
+        self.navigationController?.pushViewController(detailVC, animated: true)
+    }
     
 }
