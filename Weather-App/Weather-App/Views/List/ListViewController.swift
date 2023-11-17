@@ -8,18 +8,38 @@
 import UIKit
 import Then
 import SnapKit
+import Combine
 
 class ListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    private var getWeatherService: GetWeatherService = GetWeatherService()
+    private var cancellable: AnyCancellable?
+    
+    private let cities: [String] = ["seoul", "gwangju", "gumi", "gunsan", "daegu"]
+    private let korCities: [String] = ["서울", "광주", "구미", "군산", "대구"]
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return 5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.identifier,
-                                                       for: indexPath) as? ListTableViewCell else {return UITableViewCell()}
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.identifier, for: indexPath) as? ListTableViewCell else {
+            return UITableViewCell()
+        }
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapMyLocationView))
-        cell.addGestureRecognizer(tapGesture)
+        var city = cities[indexPath.row]
+        
+        getWeatherService.fetchWeather(city: city)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print("오류: \(error)")
+                }
+            }, receiveValue: { weather in
+                cell.setUI(weather: weather)
+            })
+            .store(in: &cell.cancellables)
         
         return cell
     }
@@ -36,14 +56,16 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.navigationController?.navigationBar.isHidden = true
         
         self.view.addSubviews(etcButton,
                               tableView)
+        
+        setPublishers()
         setConstraints()
         setTableViewConfig()
         self.tableView.alwaysBounceVertical = true
+        
     }
     
     private func setTableViewConfig() {
@@ -67,6 +89,28 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
+    public let searchTextField = UITextField().then {
+        let placeholderTextColor = UIColor.lightGray
+        $0.borderStyle = .roundedRect
+        $0.placeholder = "도시 또는 공항 검색"
+        $0.textColor = .white
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.foregroundColor: placeholderTextColor
+        ]
+        $0.attributedPlaceholder = NSAttributedString(string: $0.placeholder ?? "", attributes: attributes)
+        $0.backgroundColor = .secondarySystemFill
+        
+        let imageView = UIImageView()
+        imageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        imageView.image = UIImage(named: "icon-search")
+        $0.leftView = imageView
+        $0.leftViewMode = .always
+        
+        let marginView = UIView()
+        imageView.frame = CGRect(x: 0, y: 0, width: 8, height: 24)
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
         
@@ -75,28 +119,6 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             $0.font = customFont
             $0.text = "날씨"
             $0.textColor = .white
-        }
-        
-        let searchTextField = UITextField().then {
-            let placeholderTextColor = UIColor.lightGray
-            $0.borderStyle = .roundedRect
-            $0.placeholder = "도시 또는 공항 검색"
-            $0.textColor = .white
-            
-            let attributes: [NSAttributedString.Key: Any] = [
-                NSAttributedString.Key.foregroundColor: placeholderTextColor
-            ]
-            $0.attributedPlaceholder = NSAttributedString(string: $0.placeholder ?? "", attributes: attributes)
-            $0.backgroundColor = .secondarySystemFill
-            
-            let imageView = UIImageView()
-            imageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
-            imageView.image = UIImage(named: "icon-search")
-            $0.leftView = imageView
-            $0.leftViewMode = .always
-            
-            let marginView = UIView()
-            imageView.frame = CGRect(x: 0, y: 0, width: 8, height: 24)
         }
         
         headerView.addSubviews(appTitle, searchTextField)
@@ -118,12 +140,28 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 117.0
+        return 132.0
     }
+    
     
     @objc func tapMyLocationView() {
         let detailVC = DetailViewController()
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
     
+    private func setPublishers() {
+        let publisher = Publishers.Sequence<[String], Never>(sequence: cities)
+        
+        self.cancellable = publisher
+            .flatMap { city in
+                return self.getWeatherService.fetchWeather(city: city)
+                    .catch { error in
+                        Just(WeatherResponse(main: Main.placeholder, timezone: 0, name: ""))
+                    }
+                    .eraseToAnyPublisher()
+            }
+            .sink { weather in
+                print(weather.name)
+            }
+    }
 }

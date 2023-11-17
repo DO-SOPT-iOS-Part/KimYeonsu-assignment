@@ -8,14 +8,25 @@
 import UIKit
 import Then
 import SnapKit
+import Combine
 
 class ListTableViewCell: UITableViewCell {
-
+    
     static let identifier: String = "ItemListTableViewCell"
-
+    
+    private var getWeatherService: GetWeatherService = GetWeatherService()
+    private var cancellable: AnyCancellable?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        // setPublishers()
         setConstraints()
+    
+    }
+    
+    override func prepareForReuse() {
+        cancellable?.cancel()
     }
     
     required init?(coder: NSCoder) {
@@ -26,14 +37,14 @@ class ListTableViewCell: UITableViewCell {
         $0.image = UIImage(named: "bg-list")
     }
     
-    private let locationLabel = UILabel().then {
+    private let myLocationLabel = UILabel().then {
         let customTitleFont = UIFont(name: "SFProText-Bold", size: 24.0)
         $0.font = customTitleFont
         $0.text = "나의 위치"
         $0.textColor = .white
     }
     
-    private let myLocationLabel = UILabel().then {
+    private let currentTimeLabel = UILabel().then {
         let customTitleFont = UIFont(name: "SFProText-Medium", size: 17.0)
         $0.font = customTitleFont
         $0.text = "의정부시"
@@ -64,11 +75,12 @@ class ListTableViewCell: UITableViewCell {
     private func setConstraints() {
         
         self.contentView.addSubview(listView)
-        self.listView.addSubviews(locationLabel,
-                                  myLocationLabel,
+        self.listView.addSubviews(myLocationLabel,
+                                  currentTimeLabel,
                                   degreeNumber,
                                   statusText,
-                                  todayDegreeNumber)
+                                  todayDegreeNumber
+        )
         self.contentView.backgroundColor = .black
         
         listView.snp.makeConstraints {
@@ -76,27 +88,50 @@ class ListTableViewCell: UITableViewCell {
             $0.trailing.equalToSuperview()
             $0.height.equalTo(117)
         }
-        locationLabel.snp.makeConstraints {
+        myLocationLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(16)
             $0.top.equalToSuperview().inset(10)
         }
-        myLocationLabel.snp.makeConstraints {
+        currentTimeLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(16)
-            $0.top.equalTo(locationLabel.snp.bottom).offset(2)
+            $0.top.equalTo(myLocationLabel.snp.bottom).offset(2)
         }
         degreeNumber.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.trailing.equalToSuperview().inset(16)
         }
         statusText.snp.makeConstraints {
-            $0.leading.equalTo(myLocationLabel)
+            $0.leading.equalTo(currentTimeLabel)
             $0.bottom.equalToSuperview().inset(10)
         }
         todayDegreeNumber.snp.makeConstraints {
             $0.trailing.equalTo(degreeNumber)
             $0.bottom.equalTo(statusText)
         }
-        
     }
-
+    
+    func setUI(weather: WeatherResponse) {
+        myLocationLabel.text = weather.name
+        currentTimeLabel.text = convertTimeZoneOffsetToString(weather.timezone)
+        degreeNumber.text = "\(formatNumberToOneDecimalPlace(weather.main.temp!))°"
+        todayDegreeNumber.text = "최고:\(formatNumberToOneDecimalPlace(weather.main.temp_max!))° 최저:\(formatNumberToOneDecimalPlace(weather.main.temp_min!))°"
+        }
+    
+    func convertTimeZoneOffsetToString(_ offset: Int) -> String {
+        let hours = offset / 3600
+        let minutes = abs((offset % 3600) / 60)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        formatter.timeZone = TimeZone(secondsFromGMT: offset)
+        
+        let formattedString = formatter.string(from: Date())
+        
+        return formattedString
+    }
+    
+    func formatNumberToOneDecimalPlace(_ number: Double) -> String {
+        let formattedNumber = String(format: "%.1f", number)
+        return formattedNumber
+    }
 }
