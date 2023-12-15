@@ -16,9 +16,10 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     private var cancellable: AnyCancellable?
     
     private let cities: [String] = ["seoul", "gwangju", "gumi", "gunsan", "daegu"]
-    private let korCities: [String] = ["서울", "광주", "구미", "군산", "대구"]
+    private var weatherResponse: [WeatherResponse] = []
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return weatherResponse.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -27,19 +28,7 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         
         var city = cities[indexPath.row]
-        
-        getWeatherService.fetchWeather(city: city)
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print("오류: \(error)")
-                }
-            }, receiveValue: { weather in
-                cell.setUI(weather: weather)
-            })
-            .store(in: &cell.cancellables)
+        cell.setUI(weather: weatherResponse[indexPath.row])
         
         return cell
     }
@@ -153,15 +142,18 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let publisher = Publishers.Sequence<[String], Never>(sequence: cities)
         
         self.cancellable = publisher
-            .flatMap { city in
+            .flatMap { [weak self] city in
+                guard let self = self else {return Just(WeatherResponse(main: Main.placeholder, timezone: 0, name: "")).eraseToAnyPublisher() } // weak self로 만들어주는 publisher 
                 return self.getWeatherService.fetchWeather(city: city)
                     .catch { error in
                         Just(WeatherResponse(main: Main.placeholder, timezone: 0, name: ""))
                     }
                     .eraseToAnyPublisher()
             }
-            .sink { weather in
-                print(weather.name)
+            .collect()  // 5개 데이터 -> 배열로!
+            .sink { [weak self] weather in
+                self?.weatherResponse = weather
+                self?.tableView.reloadData()
             }
     }
 }

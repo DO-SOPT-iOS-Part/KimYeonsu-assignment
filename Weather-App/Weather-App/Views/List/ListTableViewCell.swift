@@ -16,6 +16,7 @@ class ListTableViewCell: UITableViewCell {
     
     private var getWeatherService: GetWeatherService = GetWeatherService()
     private var cancellable: AnyCancellable?
+    public var cancellables: Set<AnyCancellable> = []
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -40,35 +41,35 @@ class ListTableViewCell: UITableViewCell {
     private let myLocationLabel = UILabel().then {
         let customTitleFont = UIFont(name: "SFProText-Bold", size: 24.0)
         $0.font = customTitleFont
-        $0.text = "나의 위치"
+        $0.text = ""
         $0.textColor = .white
     }
     
     private let currentTimeLabel = UILabel().then {
         let customTitleFont = UIFont(name: "SFProText-Medium", size: 17.0)
         $0.font = customTitleFont
-        $0.text = "의정부시"
+        $0.text = ""
         $0.textColor = .white
     }
     
     private let degreeNumber = UILabel().then {
         let customDegreeFont = UIFont(name: "SFProText-Light", size: 52.0)
         $0.font = customDegreeFont
-        $0.text = "21°"
+        $0.text = ""
         $0.textColor = .white
     }
     
     private let statusText = UILabel().then {
         let customStatusFont = UIFont(name: "SFProText-Regular", size: 16.0)
         $0.font = customStatusFont
-        $0.text = "흐림"
+        $0.text = ""
         $0.textColor = .white
     }
     
     private let todayDegreeNumber = UILabel().then {
         let customTodayDegreeFont = UIFont(name: "SFProText-Regular", size: 16.0)
         $0.font = customTodayDegreeFont
-        $0.text = "최고:29° 최저:15°"
+        $0.text = ""
         $0.textColor = .white
     }
     
