@@ -13,7 +13,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+
+        /* ========= 폰트 이름 확인 =========
+        for family in UIFont.familyNames {
+            // 폰트 패밀리 이름
+            print(family)
+            // 각 폰트 이름
+            for names in UIFont.fontNames(forFamilyName: family) {
+                print("== \(names)")
+            }
+        }
+        =============================== */
+        
         return true
     }
 
